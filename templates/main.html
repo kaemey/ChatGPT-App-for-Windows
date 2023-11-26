@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="/eel.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="main.css">
+    <title>GPT Chat</title>
+</head>
+
+<body style="height:100vh">
+    <div class="container-fluid" style="height:100%">
+        <div class="row" style="height:100%">
+            <div class="col-md-2 col-sm-2 col-lg-2 leftblock">
+
+                <p>
+                    <img width="32px" height="32px" src="gpticon.png"> New chat
+                </p>
+
+            </div>
+            <div class="col-md-2 col-sm-2 col-lg-2 GPTSelector">
+
+                <p>
+                    <b>ChatGPT</b> 3.5
+                </p>
+
+            </div>
+            <div class="col-md-6 col-sm-6 col-lg-6">
+
+                <div class="container-fluid" style="height:100%">
+                    <div class="row GPTQuestionRow" style="height:70%">
+                        <div class="GPTQuestion" id="deletingMessage">
+                            <img src="gpticon.png">
+                            <p>Как я могу помочь тебе сегодня?</p>
+                            <div id="answer"></div>
+                        </div>
+                        <div id="messanger"></div>
+                    </div>
+                    <div class="row GPTInputRow" style="height:30%">
+                        <div class="GPTInput">
+
+                            <div class="GPTInputsBorder">
+
+                                    <textarea id="content" placeholder="Сообщение для ChatGPT"></textarea>
+                                    <button id="SendButton">↑</button>
+                                
+                            </div>
+                            <p>ChatGPT может допускать ошибки. Проверяйте важную информацию.</p>
+                            
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('keyup', function(event){
+            if (event.key == "Enter") getResponse()
+        });
+
+        SendButton.onclick = getResponse
+        var firstMessage = true
+
+        async function getResponse(){
+        
+            let text = content.value
+            if (text == "") return
+            content.value =""
+
+            if(firstMessage){
+                deletingMessage.remove()
+                firstMessage = false
+            }
+
+            let userTag = document.createElement("p")
+            userTag.innerHTML = "Вы:"
+            let userText = document.createElement("p")
+            userText.innerHTML = text
+            messanger.append(userTag, userText)
+
+            let loading = document.createElement("div")
+            loading.classList.add('loading')
+            loading.innerHTML = "Loading&#8230;"
+            messanger.append(loading)
+
+            var response = await eel.getResponse(text)()
+
+            let GPTTag = document.createElement("p")
+            GPTTag.innerHTML = "ChatGPT:"
+            let GPTText = document.createElement("p")
+            GPTText.innerHTML = response
+            messanger.append(GPTTag,GPTText)
+
+            loading.remove()
+
+            messanger.scrollTo(0, messanger.scrollHeight);
+        }
+    </script>
+</body>
+</html>

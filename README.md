@@ -1,1 +1,1 @@
-# ChatGPT-App-for-Windows
+Приложение для Windows для общения с Chat GPT
