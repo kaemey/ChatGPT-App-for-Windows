@@ -15,8 +15,4 @@ def getResponse(content):
     context.append({"role": "assistant", "content": response})
     return response
 
-@eel.expose
-def getMessage():
-    return "Привет!"
-
 eel.start('main.html')
