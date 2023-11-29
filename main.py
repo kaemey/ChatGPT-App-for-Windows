@@ -9,7 +9,7 @@ context = list()
 def getResponse(content):
     context.append({"role": "user", "content": content})
     response = g4f.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-3.5-turbo-16k-0613",
         messages=context,
     )  # Alternative model setting
     context.append({"role": "assistant", "content": response})
